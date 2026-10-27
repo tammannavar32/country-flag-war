@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Country Flag Circle Clash</title>
+<style>
+:root{--bg:#070b18;--panel:#111b31;--cyan:#44e7ff;--pink:#ff4ca1;--gold:#ffd66b}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:#fff;font-family:system-ui,-apple-system,Arial,sans-serif}
+body{background:radial-gradient(ellipse at 50% 30%,#1d3562 0%,#0b1224 52%,#050711 100%);overflow-x:hidden}
+#app{width:100%;max-width:650px;min-height:100dvh;margin:auto;position:relative;padding:14px 12px 20px;display:flex;flex-direction:column;gap:12px}
+header{text-align:center;padding:10px 8px 12px;border:1px solid #53d9ff44;border-radius:20px;background:linear-gradient(135deg,#10091c,#210b28,#071a30);box-shadow:0 0 30px #2a9dff22,inset 0 1px #ffffff20;position:relative;overflow:hidden}.topline{display:flex;justify-content:space-between;gap:5px;font-size:10px;letter-spacing:1px;font-weight:1000;color:#f9d9ff;margin:0 3px 9px}.topline span{background:#ffffff10;border:1px solid #ffffff20;border-radius:8px;padding:5px 7px}.heroGrid{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:7px;align-items:center}.leftBoard,.rightBoard{border:1px solid #ffd66b77;border-radius:10px;padding:7px 5px;background:linear-gradient(150deg,#25152fdd,#080b17ee);text-align:left;font-size:9px;min-width:0}.rightBoard{border-color:#4ce5c477}.boardTitle{font-size:9px;font-weight:1000;letter-spacing:.4px;color:#70f3db;margin-bottom:7px}.leftBoard .boardTitle{color:#ffd66b}.miniLeader{display:flex;justify-content:space-between;gap:3px;padding:4px 0;border-bottom:1px solid #ffffff12;font-weight:800}.miniLeader b{color:#fff}.miniLeader.topSupport{background:linear-gradient(90deg,#24d7c522,#f6cf4a22);border-radius:6px;padding-left:4px}.miniLeader.topSupport span{color:#ffe276}.miniLeader.topSupport:after{content:" 👑";color:#ffe276}.xpBtn{margin-top:7px;background:linear-gradient(90deg,#b842e8,#e25bc4);color:#260d30;text-align:center;border-radius:9px;padding:7px 2px;font-size:10px;font-weight:1000}.xpBtn small{display:block;font-size:8px}.heroCenter{min-width:0}.heroCenter .kicker{font-size:8px;letter-spacing:1px}.heroCenter h1{font-size:clamp(16px,4.7vw,28px);margin:8px 0;line-height:1.08}.heroCenter h1 em{font-style:normal;color:#ffdf45;-webkit-text-fill-color:#ffdf45}.heroCenter .subtitle{font-size:8px;letter-spacing:.5px}.rightBoard div:not(.boardTitle){display:flex;justify-content:space-between;gap:2px;margin:5px 0;font-size:8px}.rightBoard b{color:#ffe276;white-space:nowrap}.rightBoard small{display:block;color:#9eb4cf;font-size:7px;margin-top:7px}
+.kicker{font-size:10px;letter-spacing:4px;font-weight:900;color:var(--cyan)}
+h1{background:linear-gradient(90deg,#fff,#79f1ff,#ff9ee7,#fff);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:titleShine 5s linear infinite;font-size:clamp(23px,6vw,35px);line-height:1.05;margin:7px 0 6px;font-weight:1000;letter-spacing:.5px;text-shadow:0 0 22px #1ab8ff70}
+.subtitle{font-size:12px;color:#b6c7e8;letter-spacing:1.5px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:linear-gradient(145deg,#182642dd,#0d1528ee);border:1px solid #4c709966;border-radius:14px;padding:9px 5px;text-align:center;box-shadow:inset 0 1px #ffffff10}
+.stat b{display:block;font-size:20px;color:var(--gold)}.stat span{font-size:10px;color:#b8c9e6;letter-spacing:1px}
+#arenaWrap{position:relative;width:100%;aspect-ratio:1/1;max-height:68vh;min-height:330px;border-radius:24px;overflow:hidden;background:radial-gradient(circle,#172b4c 0%,#0c1830 58%,#080e1e 100%);border:1px solid #4e8dc4aa;box-shadow:0 0 28px #168eff25,inset 0 0 35px #000b}
+#arenaWrap:before{content:"";position:absolute;inset:4%;border:2px solid #48dfff88;border-radius:50%;box-shadow:0 0 18px #25cfff33,inset 0 0 25px #27d7ff15}
+#arenaWrap:after{content:"";position:absolute;inset:10%;border:1px dashed #6e94c477;border-radius:50%;pointer-events:none}
+canvas{width:100%;height:100%;display:block;position:absolute;inset:0}
+.overlayLabel{position:absolute;z-index:3;left:0;right:0;top:12px;text-align:center;font-size:10px;letter-spacing:2px;color:#9db9e3;font-weight:800;pointer-events:none}
+.bottomPanel{background:linear-gradient(145deg,#14213aee,#0b1224f5);border:1px solid #45628b77;border-radius:20px;padding:13px;box-shadow:0 8px 25px #0005}
+.statusLine{text-align:center;font-size:13px;color:#d9e7ff;min-height:20px;margin-bottom:10px}
+.controls{display:grid;grid-template-columns:1.3fr 1fr;gap:9px}
+button{border:0;border-radius:14px;padding:13px 10px;color:white;font-weight:950;font-size:14px;letter-spacing:.4px;background:linear-gradient(135deg,#147dff,#5549f7);box-shadow:0 5px 18px #146bff35;touch-action:manipulation}
+button:active{transform:scale(.98)}button.secondary{background:linear-gradient(135deg,#263754,#17233a);border:1px solid #526b90}
+button.music{grid-column:1/-1;background:linear-gradient(135deg,#873cff,#c52c9e)}
+.volumeRow{display:flex;align-items:center;gap:9px;margin-top:12px;padding:10px 12px;border-radius:14px;background:linear-gradient(110deg,#24194b,#172b48);border:1px solid #8d70d766}.volumeRow label{font-size:10px;font-weight:900;letter-spacing:.7px;color:#f4d6ff;white-space:nowrap}.volumeRow input{min-width:0;flex:1;accent-color:#e879f9}.volumeRow b{font-size:12px;color:#ffe28a;min-width:34px;text-align:right}.hint{text-align:center;color:#8fa5c9;font-size:11px;line-height:1.45;margin-top:10px}
+#result{display:none;position:absolute;z-index:8;inset:0;background:#030715eF;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:25px}
+#result .trophy{font-size:56px}#result h2{font-size:30px;margin:6px 0;color:var(--gold)}#result p{color:#c7d8f4;font-size:14px}
+#result button{margin-top:10px;min-width:180px}
+#leaderboard{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:8px}
+.chip{font-size:11px;background:#1b2a45;border:1px solid #42618b;border-radius:20px;padding:5px 9px;color:#e1edff}
+.chip strong{color:var(--gold)}
+@media(max-width:380px){.heroGrid{grid-template-columns:.92fr 1.1fr .92fr;gap:4px}.leftBoard,.rightBoard{padding:5px 3px}.boardTitle{font-size:8px}.topline{font-size:8px}.heroCenter h1{font-size:16px}}
+@media(max-height:720px){#app{gap:8px;padding-top:8px}#arenaWrap{min-height:280px;max-height:58vh}.stat{padding:6px}.bottomPanel{padding:10px}}
+@keyframes titleShine{to{background-position:220% center}}\n</style></head><body>
+<div id="app">
+<header class="hero"><div class="topline"><span>🌐 FLAGS WAR</span><span>🟢 LIVE</span><span id="cycleTag">CYCLE 001</span></div><div class="heroGrid"><div class="leftBoard"><div class="boardTitle">🏆 MOST SUPPORTED</div><div id="miniLeaders"></div><div id="topSupportName" style="margin-top:7px;padding:6px 4px;border-radius:7px;background:#23d9c51c;border:1px solid #49f1d755;color:#78ffe4;font-weight:1000;text-align:center;font-size:10px">👑 TOP: —</div><div class="xpBtn" id="xpBtn">👑 Claim XP <small>+25 XP</small></div></div><div class="heroCenter"><div class="kicker">LIVE COUNTRY BATTLE</div><h1>WHERE ARE<br><em>YOU FROM?</em></h1><div class="subtitle">COMMENT • SUPPORT • WIN</div></div><div class="rightBoard"><div class="boardTitle">🛡️ SAVE YOUR COUNTRY</div><div>💬 Chat support <b id="chatCount">0</b></div><div>❤️ Likes <b id="supportCount">0</b></div><div>⭐ Super Chat <b>0</b></div><div>🔔 Subscribe <b>FREE POWER</b></div><div>💎 Jewels <b>0</b></div><small>Type a country name to support it</small></div></div></header>
+<div class="stats"><div class="stat"><b id="roundNum">01</b><span>ROUND</span></div><div class="stat"><b id="aliveNum">150</b><span>FLAGS ALIVE</span></div><div class="stat"><b id="totalLikes">0</b><span>DEMO LIKES</span></div></div>
+<div id="arenaWrap"><div class="overlayLabel">THE CLASH ARENA</div><canvas id="arena"></canvas><div id="result"><div class="trophy">🏆</div><h2 id="winnerName">WINNER!</h2><p id="winnerText">Round complete</p></div></div>
+<div class="bottomPanel"><div class="statusLine" id="status">Tap START BATTLE to begin!</div><div class="controls"><button id="startBtn">⚔️ START BATTLE</button><button class="secondary" id="resetBtn">↻ RESET</button></div><div class="hint">Tap a flag to support it: every like boosts that flag’s strength and restores a little health • Live chat/API counters are placeholders until connected to YouTube</div><div id="leaderboard"></div></div>
+</div>
+<script>
+(()=>{
+const canvas=document.getElementById('arena'),ctx=canvas.getContext('2d');
+const $=id=>document.getElementById(id);
+const countries=[
+['🇮🇳','INDIA','#ff9f43'],['🇺🇸','USA','#5da9ff'],['🇧🇷','BRAZIL','#51e28c'],['🇯🇵','JAPAN','#ff667a'],
+['🇬🇧','UK','#b58aff'],['🇩🇪','GERMANY','#ffd65a'],['🇫🇷','FRANCE','#72e0ed'],['🇨🇦','CANADA','#ff6f91'],
+['🇰🇷','KOREA','#b6a6ff'],['🇦🇺','AUSTRALIA','#67c5ff'],['🇲🇽','MEXICO','#7fe0a0'],['🇮🇹','ITALY','#a3f28d'],
+['🇪🇸','SPAIN','#ffb05c'],['🇹🇷','TURKEY','#ff7f83'],['🇦🇷','ARGENTINA','#92dcff'],['🇿🇦','S.AFRICA','#ffda7b'],
+['🇳🇬','NIGERIA','#83f0a1'],['🇸🇦','SAUDI','#a7e9c5'],['🇮🇩','INDONESIA','#ff7c9a'],['🇵🇹','PORTUGAL','#8ed7b5'],
+['🇵🇰','PAKISTAN','#8ee3b0'],['🇳🇱','NETHERLANDS','#ffa7a7'],['🇸🇪','SWEDEN','#8db7ff'],['🇳🇿','NEW ZEALAND','#8ecbff']
+];
+const worldCodes=('AD AE AF AG AL AM AO AR AT AU AZ BA BB BD BE BF BG BH BI BJ BN BO BR BS BT BW BY BZ CA CD CF CG CH CI CL CM CN CO CR CU CV CY CZ DE DJ DK DM DO DZ EC EE EG ER ES ET FI FJ FM FR GA GB GD GE GH GM GN GQ GR GT GW GY HN HR HT HU ID IE IL IN IQ IR IS IT JM JO JP KE KG KH KI KM KN KP KR KW KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MG MH MK ML MM MN MR MT MU MV MW MX MY MZ NA NE NG NI NL NO NP NR NZ OM PA PE PG PH PK PL PS PT PW PY QA RO RS RU RW SA SB SC SD SE SG SI SK SL SM SN SO SR SS ST SV SY SZ TD TG TH TJ TL TM TN TO TR TT TV TW TZ UA UG US UY UZ VA VC VE VN VU WS YE ZA ZM ZW'.split(' '));
+const knownNames={AD:'ANDORRA',AE:'UAE',AF:'AFGHANISTAN',AG:'ANTIGUA',AL:'ALBANIA',AM:'ARMENIA',AO:'ANGOLA',AT:'AUSTRIA',AZ:'AZERBAIJAN',BA:'BOSNIA',BB:'BARBADOS',BD:'BANGLADESH',BE:'BELGIUM',BF:'BURKINA FASO',BG:'BULGARIA',BH:'BAHRAIN',BI:'BURUNDI',BJ:'BENIN',BN:'BRUNEI',BO:'BOLIVIA',BS:'BAHAMAS',BT:'BHUTAN',BW:'BOTSWANA',BY:'BELARUS',BZ:'BELIZE',CD:'DR CONGO',CF:'CENTRAL AFRICA',CG:'CONGO',CI:'IVORY COAST',CL:'CHILE',CM:'CAMEROON',CN:'CHINA',CO:'COLOMBIA',CR:'COSTA RICA',CU:'CUBA',CV:'CAPE VERDE',CY:'CYPRUS',CZ:'CZECHIA',DJ:'DJIBOUTI',DM:'DOMINICA',DO:'DOMINICAN REP.',DZ:'ALGERIA',EC:'ECUADOR',EE:'ESTONIA',EG:'EGYPT',ER:'ERITREA',ET:'ETHIOPIA',FI:'FINLAND',FJ:'FIJI',FM:'MICRONESIA',GA:'GABON',GD:'GRENADA',GE:'GEORGIA',GH:'GHANA',GM:'GAMBIA',GN:'GUINEA',GQ:'EQUATORIAL GUINEA',GR:'GREECE',GT:'GUATEMALA',GW:'GUINEA-BISSAU',GY:'GUYANA',HN:'HONDURAS',HR:'CROATIA',HT:'HAITI',IE:'IRELAND',IL:'ISRAEL',IQ:'IRAQ',IS:'ICELAND',JM:'JAMAICA',JO:'JORDAN',KE:'KENYA',KG:'KYRGYZSTAN',KH:'CAMBODIA',KI:'KIRIBATI',KM:'COMOROS',KN:'ST KITTS',KP:'NORTH KOREA',KW:'KUWAIT',KZ:'KAZAKHSTAN',LA:'LAOS',LB:'LEBANON',LC:'ST LUCIA',LI:'LIECHTENSTEIN',LK:'SRI LANKA',LR:'LIBERIA',LS:'LESOTHO',LT:'LITHUANIA',LU:'LUXEMBOURG',LV:'LATVIA',LY:'LIBYA',MA:'MOROCCO',MC:'MONACO',MD:'MOLDOVA',ME:'MONTENEGRO',MG:'MADAGASCAR',MH:'MARSHALL ISLANDS',MK:'NORTH MACEDONIA',ML:'MALI',MM:'MYANMAR',MN:'MONGOLIA',MR:'MAURITANIA',MT:'MALTA',MU:'MAURITIUS',MV:'MALDIVES',MW:'MALAWI',MY:'MALAYSIA',MZ:'MOZAMBIQUE',NA:'NAMIBIA',NE:'NIGER',NI:'NICARAGUA',NP:'NEPAL',NR:'NAURU',OM:'OMAN',PA:'PANAMA',PE:'PERU',PG:'PAPUA NEW GUINEA',PH:'PHILIPPINES',PL:'POLAND',PS:'PALESTINE',PW:'PALAU',PY:'PARAGUAY',QA:'QATAR',RO:'ROMANIA',RS:'SERBIA',RW:'RWANDA',SB:'SOLOMON ISLANDS',SC:'SEYCHELLES',SD:'SUDAN',SG:'SINGAPORE',SI:'SLOVENIA',SK:'SLOVAKIA',SL:'SIERRA LEONE',SM:'SAN MARINO',SN:'SENEGAL',SO:'SOMALIA',SR:'SURINAME',SS:'SOUTH SUDAN',ST:'SAO TOME',SV:'EL SALVADOR',SY:'SYRIA',SZ:'ESWATINI',TD:'CHAD',TG:'TOGO',TJ:'TAJIKISTAN',TL:'TIMOR-LESTE',TM:'TURKMENISTAN',TN:'TUNISIA',TO:'TONGA',TT:'TRINIDAD',TV:'TUVALU',TW:'TAIWAN',TZ:'TANZANIA',UG:'UGANDA',UY:'URUGUAY',UZ:'UZBEKISTAN',VA:'VATICAN',VC:'ST VINCENT',VE:'VENEZUELA',VN:'VIETNAM',VU:'VANUATU',WS:'SAMOA',YE:'YEMEN',ZM:'ZAMBIA',ZW:'ZIMBABWE'};
+const flagEmoji=cc=>String.fromCodePoint(...cc.split('').map(ch=>127397+ch.charCodeAt(0)));
+worldCodes.forEach(cc=>{const em=flagEmoji(cc);if(!countries.some(c=>c[0]===em))countries.push([em,knownNames[cc]||cc,'#8ed7ff']);});
+
+let flags=[],bullets=[],round=1,started=false,raf=0,last=0,totalLikes=0,music=false,audio=null,musicTimer=null,step=0,initialCount=0,volumeLevel=0.85;
+let W=400,H=400,dpr=1;
+function resize(){const r=canvas.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
+window.addEventListener('resize',resize);resize();
+function spawn(n){initialCount=n;flags=[];bullets=[];const shuffled=countries.slice().sort(()=>Math.random()-.5);for(let i=0;i<n;i++){let a=Math.random()*Math.PI*2,edge=Math.random()<.5?Math.random()*W:(Math.random()<.5?0:W);let x,y;
+if(Math.random()<.5){x=Math.random()*W;y=Math.random()<.5?8:H-8}else{x=Math.random()<.5?8:W-8;y=Math.random()*H}
+const c=shuffled[i%shuffled.length];flags.push({emoji:c[0],name:c[1],color:c[2],x,y,vx:(W/2-x)*(.003+Math.random()*.003)+(Math.random()-.5)*2,vy:(H/2-y)*(.003+Math.random()*.003)+(Math.random()-.5)*2,hp:100,power:1,likes:0,r:Math.max(4.2,Math.min(8,W/(n>60?68:n>30?52:39))),alive:true,phase:Math.random()*7,shotCooldown:Math.floor(Math.random()*45)});}}
+function updateUI(){$('roundNum').textContent=String(round).padStart(2,'0');$('cycleTag').textContent='CYCLE '+String(round).padStart(3,'0');$('aliveNum').textContent=flags.filter(f=>f.alive).length;$('totalLikes').textContent=totalLikes;$('supportCount').textContent=totalLikes;$('chatCount').textContent=flags.reduce((n,f)=>n+f.likes,0);const ranked=flags.slice().sort((a,b)=>b.likes-a.likes);$('leaderboard').innerHTML=ranked.slice(0,4).map(f=>`<div class="chip">${f.emoji} ${f.name} <strong>♥ ${f.likes}</strong> · P${f.power}</div>`).join('');$('miniLeaders').innerHTML=ranked.slice(0,3).map((f,i)=>`<div class="miniLeader ${i===0 && f.likes>0?'topSupport':''}"><span>${i+1}. ${f.emoji} ${f.name}</span><b>${f.likes}</b></div>`).join('');const top=ranked[0];$('topSupportName').textContent=top&&top.likes>0?`👑 ${top.emoji} ${top.name} LEADING · ${top.likes} SUPPORT`:'👑 WAITING FOR SUPPORT';}
+function draw(){ctx.clearRect(0,0,W,H);
+ // Arena wall: glowing ring with evenly spaced rivet-dots and short connecting bars.
+ const wallR=Math.min(W,H)*.465;ctx.save();ctx.shadowColor='#39e8ff';ctx.shadowBlur=10;ctx.strokeStyle='#47dcff';ctx.lineWidth=3;ctx.beginPath();ctx.arc(W/2,H/2,wallR,0,Math.PI*2);ctx.stroke();ctx.shadowBlur=0;
+ const dotCount=72;for(let i=0;i<dotCount;i++){const a=i*Math.PI*2/dotCount;const x=W/2+Math.cos(a)*wallR,y=H/2+Math.sin(a)*wallR;ctx.fillStyle=i%6===0?'#ffe37a':'#a9f6ff';ctx.beginPath();ctx.arc(x,y,i%6===0?2.8:1.7,0,Math.PI*2);ctx.fill();if(i%6===0){const a2=(i+1)*Math.PI*2/dotCount;ctx.strokeStyle='#5bdfff';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(W/2+Math.cos(a2)*wallR,H/2+Math.sin(a2)*wallR);ctx.stroke();}}ctx.restore();
+ctx.save();ctx.strokeStyle='#53dfff35';ctx.lineWidth=1;for(let i=1;i<5;i++){ctx.beginPath();ctx.arc(W/2,H/2,W*i/10,0,Math.PI*2);ctx.stroke()}ctx.restore();
+
+bullets.forEach(b=>{ctx.save();ctx.strokeStyle='#ffdf58';ctx.lineWidth=2.5;ctx.shadowColor='#ff6b28';ctx.shadowBlur=8;ctx.beginPath();ctx.moveTo(b.x-b.vx*2,b.y-b.vy*2);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore()});
+flags.forEach(f=>{if(!f.alive)return;ctx.save();ctx.shadowColor=f.color;ctx.shadowBlur=3;ctx.fillStyle='#020817';ctx.beginPath();ctx.arc(f.x,f.y,f.r+3.5,0,Math.PI*2);ctx.fill();ctx.lineWidth=2.2;ctx.strokeStyle=f.color;ctx.stroke();ctx.shadowBlur=0;ctx.font=`${f.r*1.85}px "Apple Color Emoji","Noto Color Emoji",sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(f.emoji,f.x,f.y-1);
+const bw=f.r*2.2;ctx.fillStyle='#27354a';ctx.fillRect(f.x-bw/2,f.y+f.r+3,bw,4);ctx.fillStyle=f.hp>45?'#50ed9a':f.hp>20?'#ffd66b':'#ff5574';ctx.fillRect(f.x-bw/2,f.y+f.r+3,bw*Math.max(0,f.hp)/100,4);
+ctx.font='bold 9px system-ui';ctx.fillStyle='#fff';ctx.fillText('♥'+f.likes,f.x,f.y+f.r+15);ctx.restore();});
+}
+function tick(t){if(!started)return;let dt=Math.min((t-last)/16.67||1,2);last=t;step++;
+let living=flags.filter(f=>f.alive);
+const eliminatedRatio=1-(living.length/Math.max(1,initialCount));const speedBoost=1+eliminatedRatio*0.75+Math.min(round*.06,.35);
+for(const f of living){let dx=W/2-f.x,dy=H/2-f.y,dist=Math.hypot(dx,dy)||1;f.vx+=dx/dist*.045*f.power*speedBoost;f.vy+=dy/dist*.045*f.power*speedBoost;
+f.vx+=(Math.random()-.5)*.45;f.vy+=(Math.random()-.5)*.45;
+const max=(2.0+f.power*.18+round*.06)*speedBoost;let v=Math.hypot(f.vx,f.vy);if(v>max){f.vx=f.vx/v*max;f.vy=f.vy/v*max}f.x+=f.vx*dt;f.y+=f.vy*dt;
+const wallR=Math.min(W,H)*.465-f.r;let wx=f.x-W/2,wy=f.y-H/2,wd=Math.hypot(wx,wy)||1;if(wd>wallR){const nx=wx/wd,ny=wy/wd;f.x=W/2+nx*wallR;f.y=H/2+ny*wallR;const vn=f.vx*nx+f.vy*ny;if(vn>0){f.vx-=2*vn*nx;f.vy-=2*vn*ny}}
+}
+for(let i=0;i<living.length;i++)for(let j=i+1;j<living.length;j++){let a=living[i],b=living[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.1,min=a.r+b.r+2;if(d<min){let nx=dx/d,ny=dy/d,over=min-d;a.x-=nx*over*.5;a.y-=ny*over*.5;b.x+=nx*over*.5;b.y+=ny*over*.5;let rel=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(rel<0){a.vx+=nx*rel*.7;b.vx-=nx*rel*.7;a.vy+=ny*rel*.7;b.vy-=ny*rel*.7}
+if(step%5===0){let loser=Math.random()<0.5?a:b;let dmg=Math.max(2,Math.round(3+Math.random()*3));loser.hp-=dmg;if(loser.hp<=0){loser.alive=false;$('status').textContent=loser.name+' eliminated!';playTone(130,.07,'sawtooth')}else if(Math.random()<.18){playTone(240,.035,'triangle')}}}}
+// When only ten remain, survivors exchange visible gunfire; hits chip away at health.
+if(living.length<=10 && living.length>1){
+ for(const shooter of living){shooter.shotCooldown=(shooter.shotCooldown||0)-1;if(shooter.shotCooldown<=0){const targets=living.filter(t=>t!==shooter&&t.alive);if(targets.length){const target=targets[Math.floor(Math.random()*targets.length)];const dx=target.x-shooter.x,dy=target.y-shooter.y,d=Math.hypot(dx,dy)||1;bullets.push({x:shooter.x,y:shooter.y,vx:dx/d*6.5,vy:dy/d*6.5,target,sourcePower:shooter.power,life:32});shooter.shotCooldown=28+Math.floor(Math.random()*28);playTone(175+Math.random()*70,.035,'square')}}}
+ for(let i=bullets.length-1;i>=0;i--){const b=bullets[i];b.x+=b.vx*dt;b.y+=b.vy*dt;b.life--;if(b.target&&b.target.alive&&Math.hypot(b.x-b.target.x,b.y-b.target.y)<b.target.r+4){b.target.hp-=2.8*(b.sourcePower||1);if(b.target.hp<=0){b.target.alive=false;$('status').textContent='💥 '+b.target.name+' eliminated by gunfire!';playTone(115,.09,'sawtooth')}bullets.splice(i,1)}else if(b.life<=0||b.x<0||b.y<0||b.x>W||b.y>H)bullets.splice(i,1)}
+}else{bullets=[]}
+living=flags.filter(f=>f.alive);if(step%10===0)updateUI();draw();
+if(living.length<=1){endRound(living[0]);return}raf=requestAnimationFrame(tick);}
+function start(){if(started)return;music=true;startMusic();started=true;$('result').style.display='none';$('startBtn').textContent='⚔️ BATTLE RUNNING';$('status').textContent='Clash in progress — tap a flag to support it!';last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);if(music)startMusic();}
+function endRound(winner){started=false;cancelAnimationFrame(raf);$('status').textContent='Round '+round+' complete! Next round starting automatically…';$('winnerName').textContent=winner?winner.emoji+' '+winner.name+' WINS!':'DRAW!';$('winnerText').textContent='Likes: '+(winner?winner.likes:0)+' • Power: '+(winner?winner.power:0)+' • Endless battle continues';$('result').style.display='flex';$('startBtn').textContent='⚔️ BATTLE RUNNING';updateUI();setTimeout(()=>{if(!started && $('result').style.display!=='none'){nextRound();}},2200);}
+function nextRound(){round++;let n=countries.length;spawn(n);$('result').style.display='none';$('status').textContent='Round '+round+' started · '+n+' flags enter the arena!';updateUI();draw();start();}
+function reset(){started=false;cancelAnimationFrame(raf);round=1;totalLikes=0;spawn(countries.length);$('result').style.display='none';$('startBtn').textContent='⚔️ START BATTLE';$('status').textContent='Tap START BATTLE to begin!';updateUI();draw();}
+function addLikeAt(x,y){let best=null,bd=1e9;for(const f of flags){if(!f.alive)continue;let d=Math.hypot(x-f.x,y-f.y);if(d<f.r+17&&d<bd){best=f;bd=d}}if(best){best.likes++;totalLikes++;best.power=Math.min(3,+(best.power+0.12).toFixed(2));best.hp=Math.min(100,best.hp+3);$('status').textContent='💗 '+best.name+' powered up! Strength ×'+best.power.toFixed(2)+' · health restored';updateUI();playTone(620,.07,'sine');draw();}}
+canvas.addEventListener('pointerdown',e=>{const r=canvas.getBoundingClientRect();addLikeAt(e.clientX-r.left,e.clientY-r.top)});
+$('xpBtn').addEventListener('click',()=>{$('status').textContent='XP demo: play rounds and support flags to earn XP!';});$('startBtn').addEventListener('click',start);$('resetBtn').addEventListener('click',reset);
+function playTone(freq,duration,type='sine'){if(!audio||audio.state!=='running')return;let o=audio.createOscillator(),g=audio.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.0001,audio.currentTime);g.gain.exponentialRampToValueAtTime(.04,audio.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+duration);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+duration+.03);}
+function guitarPluck(freq, duration=0.42, volume=0.11){
+ if(!audio || audio.state!=='running')return;
+ const now=audio.currentTime;
+ // Plucked-string style tone: triangle fundamentals plus softly decaying harmonics.
+ const master=audio.createGain();
+ master.gain.setValueAtTime(volume*volumeLevel,now);
+ master.gain.exponentialRampToValueAtTime(0.0001,now+duration);
+ master.connect(audio.destination);
+ [1,2.01,3.02].forEach((harmonic,index)=>{
+   const osc=audio.createOscillator(),gain=audio.createGain();
+   osc.type='triangle';osc.frequency.setValueAtTime(freq*harmonic,now);
+   gain.gain.value=index===0?1:(index===1?0.28:0.10);
+   osc.connect(gain);gain.connect(master);osc.start(now);osc.stop(now+duration);
+ });
+}
+function startMusic(){
+ if(!audio){const AC=window.AudioContext||window.webkitAudioContext;if(!AC){$('status').textContent='This browser does not support generated music';return}audio=new AC()}
+ audio.resume();
+ if(musicTimer)clearTimeout(musicTimer);
+ let i=0;
+ // Original guitar-like plucked melody and bass; tempo gently rises as flags are eliminated.
+ const melody=[164.81,196,220,246.94,220,196,146.83,164.81,196,220,293.66,246.94,220,196,164.81,146.83];
+ const bass=[82.41,110,73.42,98];
+ const beat=()=>{
+   if(!music){musicTimer=null;return}
+   const alive=flags.filter(f=>f.alive).length;
+   const ratio=1-alive/Math.max(1,initialCount);
+   const interval=Math.max(155,285-ratio*55-Math.min(round*3,18));
+   guitarPluck(melody[i%melody.length],0.48,0.10);
+   if(i%2===0)guitarPluck(bass[Math.floor(i/2)%bass.length],0.55,0.065);
+   if(i%4===2)guitarPluck(melody[(i+4)%melody.length]*2,0.28,0.03);
+   i++;
+   musicTimer=setTimeout(beat,interval);
+ };
+ beat();
+}
+
+
+spawn(countries.length);updateUI();draw();
+})();
+</script></body></html>
